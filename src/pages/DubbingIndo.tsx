@@ -4,13 +4,13 @@ import { DramaCard } from "@/components/DramaCard";
 import { DramaCardSkeleton } from "@/components/DramaCardSkeleton";
 import type { Drama } from "@/types/drama";
 
-const PROXY_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/drama-proxy`;
+const API_BASE = "https://api.sansekai.my.id/api/dramabox";
 
 type ClassifyType = "terbaru" | "terpopuler";
 
 async function fetchDubindoDramas(classify: ClassifyType, page: number): Promise<Drama[]> {
   const response = await fetch(
-    `${PROXY_URL}?endpoint=dubindo&classify=${classify}&page=${page}`
+    `${API_BASE}/dubindo?classify=${classify}&page=${page}`
   );
 
   if (!response.ok) {
