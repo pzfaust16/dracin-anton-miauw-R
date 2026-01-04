@@ -59,7 +59,7 @@ export function Footer() {
                   rel="noopener noreferrer"
                   className="text-muted-foreground hover:text-primary transition-colors inline-flex items-center gap-1"
                 >
-                  Beli Source Code & API
+                  Beli Source Code API
                   <ExternalLink className="w-3 h-3" />
                 </a>
               </li>
