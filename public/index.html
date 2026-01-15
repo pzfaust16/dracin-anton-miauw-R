@@ -61,4 +61,155 @@
                     <button onclick="app.shareWA()" class="p-4 bg-white/5 rounded-2xl border border-white/10 text-xs font-bold uppercase tracking-widest">Share WhatsApp</button>
                 </div>
             </div>
-            <div class="pt-8 border-t border-white
+            <div class="pt-8 border-t border-white/5">
+                <h4 class="text-[10px] font-black mb-6 tracking-[0.3em] uppercase text-gray-500 text-center">Pilih Episode</h4>
+                <div id="episodeGrid" class="grid grid-cols-4 sm:grid-cols-6 gap-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="player" class="fixed inset-0 z-[100] hidden bg-black flex flex-col items-center justify-center p-4">
+        <div class="w-full max-w-5xl flex justify-between mb-6">
+            <button onclick="app.closePlayer()" class="text-[10px] font-bold bg-white/10 px-5 py-2 rounded-xl border border-white/10">✕ TUTUP</button>
+            <span id="playerTitle" class="text-gradient text-[10px] font-bold uppercase tracking-widest"></span>
+        </div>
+        <video id="videoObj" controls playsinline class="w-full max-w-5xl aspect-video rounded-3xl shadow-2xl border border-white/10 bg-black"></video>
+        <div class="flex gap-6 mt-10">
+            <button id="prevBtn" onclick="app.navEpisode(-1)" class="px-8 py-3 rounded-xl border border-white/10 text-[10px] font-bold">PREV</button>
+            <button id="nextBtn" onclick="app.navEpisode(1)" class="px-8 py-3 rounded-xl bg-gradient-to-r from-[#EE4d2d] to-[#ffca28] text-black text-[10px] font-bold shadow-lg">NEXT</button>
+        </div>
+    </div>
+
+    <script>
+        const app = {
+            activeId: null,
+            currentEps: 0,
+            allEpisodes: [],
+
+            async init() {
+                ui.loader(true);
+                try {
+                    const res = await fetch('/api/dramabox/latest');
+                    const result = await res.json();
+                    
+                    // Deteksi struktur data berlapis
+                    let items = [];
+                    if (Array.isArray(result)) items = result;
+                    else if (result.chapterList) items = result.chapterList;
+                    else if (result.data && result.data.chapterList) items = result.data.chapterList;
+                    else if (result.data) items = result.data;
+
+                    ui.render(items);
+                    ui.loader(false);
+                } catch (e) { 
+                    console.error("Gagal ambil data:", e);
+                    ui.loader(false);
+                }
+            },
+
+            async search() {
+                const query = document.getElementById('searchInput').value;
+                if(query.length < 2) return;
+                ui.loader(true);
+                try {
+                    const res = await fetch(`/api/dramabox/search?query=${query}`);
+                    const result = await res.json();
+                    let items = result.chapterList || result.data || result;
+                    ui.render(Array.isArray(items) ? items : []);
+                    ui.loader(false);
+                } catch (e) { ui.loader(false); }
+            },
+
+            async openDetail(id) {
+                ui.loader(true);
+                try {
+                    const resDetail = await fetch(`/api/dramabox/detail?bookId=${id}`);
+                    const resData = await resDetail.json();
+                    
+                    // Ambil detail (Dramabox membungkus di resData.data)
+                    const detail = resData.data || resData;
+                    
+                    document.getElementById('uiTitle').innerText = detail.bookName || "Untitled";
+                    document.getElementById('uiPoster').src = detail.cover || "";
+                    document.getElementById('uiDesc').innerText = detail.introduction || "No description available.";
+
+                    // Ambil Link Episode
+                    const resStream = await fetch(`/api/dramabox/linkstream?bookId=${id}`);
+                    const streamData = await resStream.json();
+                    
+                    // Handle data episode (bisa array langsung atau didalam data)
+                    this.allEpisodes = Array.isArray(streamData) ? streamData : (streamData.data || []);
+
+                    document.getElementById('episodeGrid').innerHTML = this.allEpisodes.map((ep, i) => `
+                        <button onclick="app.playEpisode(${i})" class="p-3 rounded-xl border border-white/5 bg-white/5 text-[10px] font-bold hover:bg-gradient-to-tr hover:from-[#EE4d2d] hover:to-[#ffca28] hover:text-black transition">
+                            EPS ${i+1}
+                        </button>
+                    `).join('');
+
+                    ui.loader(false);
+                    ui.openDetail();
+                } catch (e) { 
+                    ui.loader(false); 
+                    alert("Gagal memuat detail drama."); 
+                }
+            },
+
+            playEpisode(index) {
+                const ep = this.allEpisodes[index];
+                if(!ep) return;
+                
+                this.currentEps = index;
+                window.open("https://shopee.co.id", "_blank"); 
+                
+                const v = document.getElementById('videoObj');
+                v.src = ep.m3u8Link || ep.videoUrl || "";
+                
+                document.getElementById('playerTitle').innerText = `EPS ${index + 1}`;
+                document.getElementById('player').classList.remove('hidden');
+                v.play();
+            },
+
+            navEpisode(dir) { this.playEpisode(this.currentEps + dir); },
+            closePlayer() { 
+                const v = document.getElementById('videoObj');
+                v.pause();
+                v.src = "";
+                document.getElementById('player').classList.add('hidden'); 
+            },
+            shareWA() { window.open(`https://wa.me/?text=Nonton drama gratis: ${window.location.href}`, '_blank'); }
+        };
+
+        const ui = {
+            render(data) {
+                const grid = document.getElementById('movieGrid');
+                if(!data || data.length === 0) {
+                    grid.innerHTML = '<p class="col-span-full text-center text-gray-500">Gagal memuat data. Coba refresh halaman.</p>';
+                    return;
+                }
+                grid.innerHTML = data.map(m => `
+                    <div class="movie-card rounded-[2rem] p-3 cursor-pointer group" onclick="app.openDetail('${m.bookId || m.id}')">
+                        <div class="relative rounded-[1.5rem] overflow-hidden aspect-[2/3] mb-4 bg-white/5">
+                            <img src="${m.cover || m.bookCover}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" onerror="this.src='https://via.placeholder.com/300x450?text=No+Image'">
+                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-2xl">▶</div>
+                        </div>
+                        <h4 class="font-bold text-sm truncate px-2 group-hover:text-gradient transition text-white">${m.bookName || m.title}</h4>
+                    </div>
+                `).join('');
+            },
+            loader(s) { document.getElementById('loader').style.display = s ? 'flex' : 'none'; },
+            openDetail() { 
+                const d = document.getElementById('drawer');
+                d.classList.remove('hidden');
+                setTimeout(() => d.querySelector('.drawer-content').style.transform = "translateY(0)", 10);
+            },
+            closeDetail() {
+                const d = document.getElementById('drawer');
+                d.querySelector('.drawer-content').style.transform = "translateY(100%)";
+                setTimeout(() => d.classList.add('hidden'), 400);
+            }
+        };
+
+        app.init();
+    </script>
+</body>
+</html>
