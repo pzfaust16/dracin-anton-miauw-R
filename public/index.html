@@ -2,6 +2,88 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StreamOrange - Premium Gradient</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --orange: #EE4d2d; --yellow: #ffca28; --bg-dark: #0a0a0a; }
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: radial-gradient(circle at top right, #1a120b, var(--bg-dark));
+            background-attachment: fixed; color: white; min-height: 100vh;
+        }
+        .text-gradient {
+            background: linear-gradient(to right, var(--orange), var(--yellow));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800;
+        }
+        .movie-card {
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); overflow: hidden; border-radius: 24px;
+        }
+        .movie-card:hover { 
+            transform: translateY(-10px); border-color: var(--orange); 
+            box-shadow: 0 15px 35px rgba(238, 77, 45, 0.25);
+        }
+        .loader-text { animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    </style>
+</head>
+<body class="p-6 md:p-12">
+
+    <header class="max-w-7xl mx-auto mb-12 flex justify-between items-center">
+        <div>
+            <h1 class="text-3xl md:text-4xl text-gradient italic tracking-tighter uppercase">StreamOrange</h1>
+            <p class="text-[10px] text-gray-500 tracking-[0.3em] font-bold mt-1">PREMIUM STREAMING PLATFORM</p>
+        </div>
+        <div class="hidden md:block h-1 w-32 bg-gradient-to-r from-[#EE4d2d] to-transparent rounded-full"></div>
+    </header>
+
+    <div id="loader" class="text-center py-24">
+        <h2 class="loader-text text-xl font-bold text-orange-500 uppercase tracking-widest">Menghubungkan ke Server...</h2>
+        <p class="text-xs text-gray-600 mt-2 italic">Pastikan API Vercel Anda sudah aktif</p>
+    </div>
+
+    <main id="movieGrid" class="max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8">
+        </main>
+
+    <script>
+        const app = {
+            async init() {
+                const loader = document.getElementById('loader');
+                const grid = document.getElementById('movieGrid');
+
+                try {
+                    // Manggil API Vercel kamu
+                    const response = await fetch('/api/dramabox/latest');
+                    const json = await response.json();
+
+                    // LOGIKA PENEMBUS DATA (Sesuai file dramabox.js)
+                    let movies = [];
+                    if (json.chapterList) movies = json.chapterList;
+                    else if (json.data && json.data.chapterList) movies = json.data.chapterList;
+                    else if (json.data) movies = json.data;
+                    else if (Array.isArray(json)) movies = json;
+
+                    if (movies.length === 0) {
+                        loader.innerHTML = `
+                            <div class="p-8 border border-dashed border-gray-800 rounded-3xl">
+                                <p class="text-red-500 font-bold">API BERHASIL DIPANGGIL TAPI DATA KOSONG</p>
+                                <p class="text-xs text-gray-500 mt-2">Ini biasanya karena IP Vercel diblokir sementara oleh Dramabox.<br>Tunggu 10 menit lalu refresh.</p>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    // Hapus loading
+                    loader.style.display = 'none';
+
+                    // Tampilkan Film dengan Desain Gradient
+                    grid.innerHTML = movies.map(m => `
+                        <div<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
     <title>StreamOrange - Fix</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -57,3 +139,4 @@
     </script>
 </body>
 </html>
+
