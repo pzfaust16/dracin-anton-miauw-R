@@ -22,10 +22,8 @@
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .movie-card:hover { transform: translateY(-8px); border-color: var(--orange); box-shadow: 0 10px 30px rgba(238, 77, 45, 0.2); }
-        .badge-premium { background: linear-gradient(45deg, var(--orange), var(--yellow)); color: black; font-size: 10px; font-weight: 900; padding: 2px 8px; border-radius: 4px; }
         .bg-glass { background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(20px); }
         .drawer-content { background: linear-gradient(to bottom, #1a120b, #0a0a0a); border-top: 1px solid rgba(238, 77, 45, 0.3); transition: transform 0.4s ease; transform: translateY(100%); }
-        /* Loading Overlay */
         #loader { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 200; align-items: center; justify-content: center; font-weight: bold; color: var(--orange); }
     </style>
 </head>
@@ -36,7 +34,7 @@
     <nav class="sticky top-0 z-50 p-5 bg-glass border-b border-white/5">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <h1 class="text-2xl text-gradient italic tracking-tighter uppercase">StreamOrange</h1>
-            <input type="text" id="searchInput" onkeyup="app.search()" placeholder="Cari drama..." class="bg-white/5 border border-white/10 rounded-full px-6 py-2 text-xs focus:border-[#EE4d2d] outline-none w-40 md:w-64 transition">
+            <input type="text" id="searchInput" onkeyup="app.search()" placeholder="Cari drama..." class="bg-white/5 border border-white/10 rounded-full px-6 py-2 text-xs focus:border-[#EE4d2d] outline-none w-40 md:w-64 transition text-white">
         </div>
     </nav>
 
@@ -89,11 +87,14 @@
             async init() {
                 try {
                     const res = await fetch('/api/dramabox/latest');
-                    const data = await res.json();
+                    const result = await res.json();
+                    // Dramabox API mengembalikan object yang didalamnya ada chapterList
+                    const data = result.chapterList || result; 
+                    
                     ui.render(data.map(item => ({
-                        id: item.bookId, title: item.bookName, poster: item.cover, views: item.readCount
+                        id: item.bookId, title: item.bookName, poster: item.cover
                     })));
-                } catch (e) { console.error(e); }
+                } catch (e) { console.error("API Error:", e); }
             },
 
             async search() {
@@ -101,8 +102,9 @@
                 if(query.length < 3) return;
                 try {
                     const res = await fetch(`/api/dramabox/search?query=${query}`);
-                    const data = await res.json();
-                    ui.render(data.map(item => ({ id: item.bookId, title: item.bookName, poster: item.cover, views: "New" })));
+                    const result = await res.json();
+                    const data = result.chapterList || result;
+                    ui.render(data.map(item => ({ id: item.bookId, title: item.bookName, poster: item.cover })));
                 } catch (e) {}
             },
 
@@ -111,12 +113,11 @@
                 try {
                     const resDetail = await fetch(`/api/dramabox/detail?bookId=${id}`);
                     const data = await resDetail.json();
-                    this.activeId = id;
+                    
                     document.getElementById('uiTitle').innerText = data.bookName;
                     document.getElementById('uiPoster').src = data.cover;
-                    document.getElementById('uiDesc').innerText = data.introduction;
+                    document.getElementById('uiDesc').innerText = data.introduction || "";
 
-                    // Ambil Link Episode
                     const resStream = await fetch(`/api/dramabox/linkstream?bookId=${id}`);
                     this.allEpisodes = await resStream.json();
 
@@ -128,23 +129,20 @@
 
                     ui.loader(false);
                     ui.openDetail();
-                } catch (e) { ui.loader(false); alert("Gagal memuat data."); }
+                } catch (e) { ui.loader(false); alert("Gagal memuat episode."); }
             },
 
             playEpisode(index) {
                 const ep = this.allEpisodes[index];
                 if(!ep) return;
                 this.currentEps = index;
-                window.open("https://shopee.co.id", "_blank"); // Shopee Tab
+                window.open("https://shopee.co.id", "_blank"); 
                 
                 const v = document.getElementById('videoObj');
                 v.src = ep.m3u8Link || ep.videoUrl;
                 document.getElementById('playerTitle').innerText = `EPS ${index + 1}`;
                 document.getElementById('player').classList.remove('hidden');
                 v.play();
-
-                document.getElementById('prevBtn').disabled = (index === 0);
-                document.getElementById('nextBtn').disabled = (index === this.allEpisodes.length - 1);
             },
 
             navEpisode(dir) { this.playEpisode(this.currentEps + dir); },
@@ -158,7 +156,7 @@
                     <div class="movie-card rounded-[2rem] p-3 cursor-pointer group" onclick="app.openDetail('${m.id}')">
                         <div class="relative rounded-[1.5rem] overflow-hidden aspect-[2/3] mb-4">
                             <img src="${m.poster}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">▶</div>
+                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-2xl">▶</div>
                         </div>
                         <h4 class="font-bold text-sm truncate px-2 group-hover:text-gradient transition">${m.title}</h4>
                     </div>
