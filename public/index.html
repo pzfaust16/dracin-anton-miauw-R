@@ -2,59 +2,58 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StreamOrange - Premium</title>
+    <title>StreamOrange - Fix</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background: #0a0a0a; color: white; font-family: sans-serif; }
         .text-orange { color: #EE4d2d; }
-        .grid-container { display: grid; grid-template-cols: repeat(auto-fill, minmax(150px, 1fr)); gap: 20px; padding: 20px; }
-        .card { background: #1a1a1a; border-radius: 15px; overflow: hidden; cursor: pointer; transition: 0.3s; }
-        .card:hover { transform: scale(1.05); }
-        .loader { text-align: center; padding: 50px; font-weight: bold; color: #EE4d2d; }
+        .movie-card { background: #1a1a1a; border-radius: 12px; overflow: hidden; }
     </style>
 </head>
 <body>
 
-    <nav class="p-5 border-b border-white/10 flex justify-between items-center">
-        <h1 class="text-2xl font-black text-orange italic">StreamOrange</h1>
+    <nav class="p-5 border-b border-white/10">
+        <h1 class="text-2xl font-bold text-orange">StreamOrange</h1>
     </nav>
 
-    <div id="loader" class="loader">MENGHUBUNGKAN KE SERVER...</div>
-    <div id="movieGrid" class="grid-container"></div>
+    <div id="status" class="text-center p-10 text-gray-500">MENGAMBIL DATA FILM...</div>
+    
+    <div id="movieGrid" class="grid grid-cols-2 md:grid-cols-5 gap-6 p-6"></div>
 
     <script>
-        // FUNGSI UTAMA AMBIL DATA
-        async function loadMovies() {
+        async function ambilData() {
             try {
                 const response = await fetch('/api/dramabox/latest');
-                const result = await response.json();
+                const data = await response.json();
                 
-                // Berdasarkan file dramabox.js temanmu, data ada di dalam result langsung atau result.chapterList
-                const movies = Array.isArray(result) ? result : (result.chapterList || []);
+                console.log("Cek Data:", data); // Untuk liat di inspect element
 
-                if (movies.length === 0) {
-                    document.getElementById('loader').innerText = "Data Kosong dari Server";
+                // PENYEBAB MASALAH: File temanmu membungkus data di dalam 'chapterList'
+                // Jadi kita harus panggil data.chapterList
+                const listFilm = data.chapterList || data;
+
+                if (!listFilm || listFilm.length === 0) {
+                    document.getElementById('status').innerText = "Data Kosong atau IP Limit.";
                     return;
                 }
 
-                document.getElementById('loader').style.display = 'none';
+                document.getElementById('status').style.display = 'none';
                 const grid = document.getElementById('movieGrid');
-                
-                grid.innerHTML = movies.map(m => `
-                    <div class="card" onclick="alert('Membuka: ' + '${m.bookName}')">
-                        <img src="${m.cover}" class="w-full aspect-[2/3] object-cover">
-                        <div class="p-3 text-xs font-bold truncate">${m.bookName}</div>
+
+                grid.innerHTML = listFilm.map(film => `
+                    <div class="movie-card cursor-pointer" onclick="alert('Buka: ' + '${film.bookName}')">
+                        <img src="${film.cover}" class="w-full aspect-[2/3] object-cover">
+                        <div class="p-3 text-[10px] font-bold uppercase truncate">${film.bookName}</div>
                     </div>
                 `).join('');
 
-            } catch (error) {
-                document.getElementById('loader').innerText = "Gagal Terhubung ke API. Cek file index.js";
-                console.error(error);
+            } catch (err) {
+                document.getElementById('status').innerText = "Gagal koneksi ke server.";
+                console.error(err);
             }
         }
 
-        loadMovies();
+        ambilData();
     </script>
 </body>
 </html>
