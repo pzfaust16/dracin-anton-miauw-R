@@ -4,7 +4,7 @@ import { useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Search, X, Play, Menu } from "lucide-react";
+import { Search, X, Play, Menu, ArrowBigRight } from "lucide-react";
 import { useSearchDramas } from "@/hooks/useDramas";
 import { useDebounce } from "@/hooks/useDebounce";
 
@@ -37,10 +37,10 @@ export function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <Play className="w-5 h-5 text-white fill-white" />
+              <ArrowBigRight className="w-5 h-5 text-white fill-white" />
             </div>
             <span className="font-display font-bold text-xl gradient-text">
-              DramaBox
+              DramaBoxLove
             </span>
           </Link>
 
@@ -85,11 +85,10 @@ export function Header() {
                 key={link.path}
                 href={link.path}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`block py-3 px-2 text-sm font-medium rounded-lg transition-colors ${
-                  pathname === link.path
-                    ? "text-foreground bg-muted/50"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted/30"
-                }`}
+                className={`block py-3 px-2 text-sm font-medium rounded-lg transition-colors ${pathname === link.path
+                  ? "text-foreground bg-muted/50"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/30"
+                  }`}
               >
                 {link.label}
               </Link>
