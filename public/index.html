@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StreamOrange - Premium Gradient</title>
+    <title>StreamOrange - Premium Dramabox</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root { --orange: #EE4d2d; --yellow: #ffca28; --bg-dark: #0a0a0a; }
+        :root { --orange: #EE4d2d; --yellow: #ffca28; --bg-dark: #0a0a0a; --bg-accent: #1a120b; }
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
-            background: radial-gradient(circle at top right, #1a120b, var(--bg-dark));
+            background: radial-gradient(circle at top right, var(--bg-accent), var(--bg-dark));
             background-attachment: fixed; color: white; min-height: 100vh;
         }
         .text-gradient {
@@ -19,124 +19,164 @@
         }
         .movie-card {
             background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); overflow: hidden; border-radius: 24px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .movie-card:hover { 
-            transform: translateY(-10px); border-color: var(--orange); 
-            box-shadow: 0 15px 35px rgba(238, 77, 45, 0.25);
-        }
-        .loader-text { animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        .movie-card:hover { transform: translateY(-8px); border-color: var(--orange); box-shadow: 0 10px 30px rgba(238, 77, 45, 0.2); }
+        .badge-premium { background: linear-gradient(45deg, var(--orange), var(--yellow)); color: black; font-size: 10px; font-weight: 900; padding: 2px 8px; border-radius: 4px; }
+        .bg-glass { background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(20px); }
+        .drawer-content { background: linear-gradient(to bottom, #1a120b, #0a0a0a); border-top: 1px solid rgba(238, 77, 45, 0.3); transition: transform 0.4s ease; transform: translateY(100%); }
+        /* Loading Overlay */
+        #loader { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 200; align-items: center; justify-content: center; font-weight: bold; color: var(--orange); }
     </style>
 </head>
-<body class="p-6 md:p-12">
+<body class="overflow-x-hidden">
 
-    <header class="max-w-7xl mx-auto mb-12 flex justify-between items-center">
-        <div>
-            <h1 class="text-3xl md:text-4xl text-gradient italic tracking-tighter uppercase">StreamOrange</h1>
-            <p class="text-[10px] text-gray-500 tracking-[0.3em] font-bold mt-1">PREMIUM STREAMING PLATFORM</p>
+    <div id="loader">MEMPROSES DATA...</div>
+
+    <nav class="sticky top-0 z-50 p-5 bg-glass border-b border-white/5">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <h1 class="text-2xl text-gradient italic tracking-tighter uppercase">StreamOrange</h1>
+            <input type="text" id="searchInput" onkeyup="app.search()" placeholder="Cari drama..." class="bg-white/5 border border-white/10 rounded-full px-6 py-2 text-xs focus:border-[#EE4d2d] outline-none w-40 md:w-64 transition">
         </div>
-        <div class="hidden md:block h-1 w-32 bg-gradient-to-r from-[#EE4d2d] to-transparent rounded-full"></div>
-    </header>
+    </nav>
 
-    <div id="loader" class="text-center py-24">
-        <h2 class="loader-text text-xl font-bold text-orange-500 uppercase tracking-widest">Menghubungkan ke Server...</h2>
-        <p class="text-xs text-gray-600 mt-2 italic">Pastikan API Vercel Anda sudah aktif</p>
+    <main class="max-w-7xl mx-auto p-6">
+        <h3 class="text-xl font-bold mb-8 flex items-center gap-3">
+            <span class="w-2 h-8 bg-gradient-to-b from-[#EE4d2d] to-[#ffca28] rounded-full"></span> 
+            <span class="text-gradient">LATEST</span> DRAMA
+        </h3>
+        <div id="movieGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8">
+            </div>
+    </main>
+
+    <div id="drawer" class="fixed inset-0 z-[60] hidden flex items-end justify-center bg-black/90 backdrop-blur-md">
+        <div class="absolute inset-0" onclick="ui.closeDetail()"></div>
+        <div class="drawer-content relative w-full max-w-2xl rounded-t-[3rem] p-10 shadow-2xl overflow-y-auto max-h-[90vh]">
+            <div class="w-16 h-1.5 bg-white/10 mx-auto mb-10 rounded-full cursor-pointer" onclick="ui.closeDetail()"></div>
+            <div class="flex flex-col md:flex-row gap-8 mb-10">
+                <img id="uiPoster" src="" class="w-40 h-56 rounded-[2rem] object-cover shadow-2xl mx-auto md:mx-0 border border-white/10">
+                <div class="flex-1 text-center md:text-left">
+                    <h2 id="uiTitle" class="text-3xl font-800 mb-2 text-gradient leading-tight"></h2>
+                    <p id="uiDesc" class="text-gray-400 text-xs line-clamp-3 mb-6"></p>
+                    <button onclick="app.shareWA()" class="p-4 bg-white/5 rounded-2xl border border-white/10 text-xs font-bold uppercase tracking-widest">Share WhatsApp</button>
+                </div>
+            </div>
+            <div class="pt-8 border-t border-white/5">
+                <h4 class="text-[10px] font-black mb-6 tracking-[0.3em] uppercase text-gray-500 text-center">Pilih Episode</h4>
+                <div id="episodeGrid" class="grid grid-cols-4 sm:grid-cols-6 gap-3"></div>
+            </div>
+        </div>
     </div>
 
-    <main id="movieGrid" class="max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8">
-        </main>
+    <div id="player" class="fixed inset-0 z-[100] hidden bg-black flex flex-col items-center justify-center p-4">
+        <div class="w-full max-w-5xl flex justify-between mb-6">
+            <button onclick="app.closePlayer()" class="text-[10px] font-bold bg-white/10 px-5 py-2 rounded-xl border border-white/10">✕ TUTUP</button>
+            <span id="playerTitle" class="text-gradient text-[10px] font-bold uppercase tracking-widest"></span>
+        </div>
+        <video id="videoObj" controls playsinline class="w-full max-w-5xl aspect-video rounded-3xl shadow-2xl border border-white/10"></video>
+        <div class="flex gap-6 mt-10">
+            <button id="prevBtn" onclick="app.navEpisode(-1)" class="px-8 py-3 rounded-xl border border-white/10 text-[10px] font-bold">PREV</button>
+            <button id="nextBtn" onclick="app.navEpisode(1)" class="px-8 py-3 rounded-xl bg-gradient-to-r from-[#EE4d2d] to-[#ffca28] text-black text-[10px] font-bold shadow-lg">NEXT</button>
+        </div>
+    </div>
 
     <script>
         const app = {
+            activeId: null,
+            currentEps: 0,
+            allEpisodes: [],
+
             async init() {
-                const loader = document.getElementById('loader');
-                const grid = document.getElementById('movieGrid');
-
                 try {
-                    // Manggil API Vercel kamu
-                    const response = await fetch('/api/dramabox/latest');
-                    const json = await response.json();
+                    const res = await fetch('/api/dramabox/latest');
+                    const data = await res.json();
+                    ui.render(data.map(item => ({
+                        id: item.bookId, title: item.bookName, poster: item.cover, views: item.readCount
+                    })));
+                } catch (e) { console.error(e); }
+            },
 
-                    // LOGIKA PENEMBUS DATA (Sesuai file dramabox.js)
-                    let movies = [];
-                    if (json.chapterList) movies = json.chapterList;
-                    else if (json.data && json.data.chapterList) movies = json.data.chapterList;
-                    else if (json.data) movies = json.data;
-                    else if (Array.isArray(json)) movies = json;
+            async search() {
+                const query = document.getElementById('searchInput').value;
+                if(query.length < 3) return;
+                try {
+                    const res = await fetch(`/api/dramabox/search?query=${query}`);
+                    const data = await res.json();
+                    ui.render(data.map(item => ({ id: item.bookId, title: item.bookName, poster: item.cover, views: "New" })));
+                } catch (e) {}
+            },
 
-                    if (movies.length === 0) {
-                        loader.innerHTML = `
-                            <div class="p-8 border border-dashed border-gray-800 rounded-3xl">
-                                <p class="text-red-500 font-bold">API BERHASIL DIPANGGIL TAPI DATA KOSONG</p>
-                                <p class="text-xs text-gray-500 mt-2">Ini biasanya karena IP Vercel diblokir sementara oleh Dramabox.<br>Tunggu 10 menit lalu refresh.</p>
-                            </div>
-                        `;
-                        return;
-                    }
+            async openDetail(id) {
+                ui.loader(true);
+                try {
+                    const resDetail = await fetch(`/api/dramabox/detail?bookId=${id}`);
+                    const data = await resDetail.json();
+                    this.activeId = id;
+                    document.getElementById('uiTitle').innerText = data.bookName;
+                    document.getElementById('uiPoster').src = data.cover;
+                    document.getElementById('uiDesc').innerText = data.introduction;
 
-                    // Hapus loading
-                    loader.style.display = 'none';
+                    // Ambil Link Episode
+                    const resStream = await fetch(`/api/dramabox/linkstream?bookId=${id}`);
+                    this.allEpisodes = await resStream.json();
 
-                    // Tampilkan Film dengan Desain Gradient
-                    grid.innerHTML = movies.map(m => `
-                        <div<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>StreamOrange - Fix</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body { background: #0a0a0a; color: white; font-family: sans-serif; }
-        .text-orange { color: #EE4d2d; }
-        .movie-card { background: #1a1a1a; border-radius: 12px; overflow: hidden; }
-    </style>
-</head>
-<body>
+                    document.getElementById('episodeGrid').innerHTML = this.allEpisodes.map((ep, i) => `
+                        <button onclick="app.playEpisode(${i})" class="p-3 rounded-xl border border-white/5 bg-white/5 text-[10px] font-bold hover:bg-gradient-to-tr hover:from-[#EE4d2d] hover:to-[#ffca28] hover:text-black transition">
+                            EPS ${i+1}
+                        </button>
+                    `).join('');
 
-    <nav class="p-5 border-b border-white/10">
-        <h1 class="text-2xl font-bold text-orange">StreamOrange</h1>
-    </nav>
+                    ui.loader(false);
+                    ui.openDetail();
+                } catch (e) { ui.loader(false); alert("Gagal memuat data."); }
+            },
 
-    <div id="status" class="text-center p-10 text-gray-500">MENGAMBIL DATA FILM...</div>
-    
-    <div id="movieGrid" class="grid grid-cols-2 md:grid-cols-5 gap-6 p-6"></div>
-
-    <script>
-        async function ambilData() {
-            try {
-                const response = await fetch('/api/dramabox/latest');
-                const data = await response.json();
+            playEpisode(index) {
+                const ep = this.allEpisodes[index];
+                if(!ep) return;
+                this.currentEps = index;
+                window.open("https://shopee.co.id", "_blank"); // Shopee Tab
                 
-                console.log("Cek Data:", data); // Untuk liat di inspect element
+                const v = document.getElementById('videoObj');
+                v.src = ep.m3u8Link || ep.videoUrl;
+                document.getElementById('playerTitle').innerText = `EPS ${index + 1}`;
+                document.getElementById('player').classList.remove('hidden');
+                v.play();
 
-                // PENYEBAB MASALAH: File temanmu membungkus data di dalam 'chapterList'
-                // Jadi kita harus panggil data.chapterList
-                const listFilm = data.chapterList || data;
+                document.getElementById('prevBtn').disabled = (index === 0);
+                document.getElementById('nextBtn').disabled = (index === this.allEpisodes.length - 1);
+            },
 
-                if (!listFilm || listFilm.length === 0) {
-                    document.getElementById('status').innerText = "Data Kosong atau IP Limit.";
-                    return;
-                }
+            navEpisode(dir) { this.playEpisode(this.currentEps + dir); },
+            closePlayer() { document.getElementById('videoObj').pause(); document.getElementById('player').classList.add('hidden'); },
+            shareWA() { window.open(`https://wa.me/?text=Nonton film gratis: ${window.location.href}`, '_blank'); }
+        };
 
-                document.getElementById('status').style.display = 'none';
-                const grid = document.getElementById('movieGrid');
-
-                grid.innerHTML = listFilm.map(film => `
-                    <div class="movie-card cursor-pointer" onclick="alert('Buka: ' + '${film.bookName}')">
-                        <img src="${film.cover}" class="w-full aspect-[2/3] object-cover">
-                        <div class="p-3 text-[10px] font-bold uppercase truncate">${film.bookName}</div>
+        const ui = {
+            render(data) {
+                document.getElementById('movieGrid').innerHTML = data.map(m => `
+                    <div class="movie-card rounded-[2rem] p-3 cursor-pointer group" onclick="app.openDetail('${m.id}')">
+                        <div class="relative rounded-[1.5rem] overflow-hidden aspect-[2/3] mb-4">
+                            <img src="${m.poster}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">▶</div>
+                        </div>
+                        <h4 class="font-bold text-sm truncate px-2 group-hover:text-gradient transition">${m.title}</h4>
                     </div>
                 `).join('');
-
-            } catch (err) {
-                document.getElementById('status').innerText = "Gagal koneksi ke server.";
-                console.error(err);
+            },
+            loader(s) { document.getElementById('loader').style.display = s ? 'flex' : 'none'; },
+            openDetail() { 
+                const d = document.getElementById('drawer');
+                d.classList.remove('hidden');
+                setTimeout(() => d.querySelector('.drawer-content').style.transform = "translateY(0)", 10);
+            },
+            closeDetail() {
+                const d = document.getElementById('drawer');
+                d.querySelector('.drawer-content').style.transform = "translateY(100%)";
+                setTimeout(() => d.classList.add('hidden'), 400);
             }
-        }
-
-        ambilData();
+        };
+        app.init();
     </script>
 </body>
 </html>
-
