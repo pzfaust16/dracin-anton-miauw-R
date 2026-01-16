@@ -9,8 +9,8 @@ export function Footer() {
           {/* Brand */}
           <div className="md:col-span-2">
             <Link href="/" className="flex items-center gap-2 group mb-4">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-300 to-orange-600 flex items-center justify-center">
-                <ArrowBigRight className="w-5 h-5 text-white fill-white" />
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center">
+                <img src="/logo.svg" alt="MaoMao Logo" className="w-8 h-8" />
               </div>
               <span className="font-display font-bold text-xl text-orange-400">
                 MaoMao
