@@ -21,9 +21,11 @@ export function HeroSection({ title, description, icon = "sparkles" }: HeroSecti
   const containerRef = useRef<HTMLDivElement>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [scale, setScale] = useState(1);
-  const imageUrl = "https://images.unsplash.com/photo-1572188863110-46d457c9234d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+  // const imageUrl = "https://images.unsplash.com/photo-1572188863110-46d457c9234d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 
   // const imageUrl = "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?w=1200"
+
+  const imageUrl = '/poster_beranda.jpg'
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
@@ -102,10 +104,10 @@ export function HeroSection({ title, description, icon = "sparkles" }: HeroSecti
         <span className="badge-popular mb-4 inline-block">
           HOT RELEASE
         </span>
-        <h2 className="text-4xl md:text-6xl mb-4 leading-tight">Telah Hadir!
+        <h2 className="text-4xl md:text-6xl mb-4 leading-tight">Selamat Menikmati!
           <span className="bg-gradient-to-r from-orange-600 to-orange-300 inline-block text-transparent bg-clip-text text-6xl font-extrabold">MAOMAO</span>
         </h2>
-        <p className="text-white text-sm mb-6 line-clamp-2">Drama pilihan yang dipersonalisasi khusus untukmu. Temukan cerita seru yang sesuai selera!</p>
+        <p className="text-white text-sm mb-6 line-clamp-2">Drama pilihan tanpa sponsor menjengkelkan, tanpa login2 ribet, dan pastinya bisa 24 jam.</p>
         <Button className="bg-gradient-to-r from-[#EE4d2d] to-[#ffca28] rounded-2xl text-sm transition active:scale-95 shadow-lg">
           <Link href={'/terbaru'}>Nonton Sekarang</Link>
         </Button>
