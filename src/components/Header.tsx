@@ -36,16 +36,17 @@ export function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-300 to-orange-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <ArrowBigRight className="w-5 h-5 text-white fill-white" />
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              {/* <ArrowBigRight className="w-5 h-5 text-white fill-white" /> */}
+              <img src="/logo.svg" alt="MaoMao Logo" className="w-8 h-8" />
             </div>
-            <span className="font-display font-bold text-xl text-orange-400">
+            <span className="font-display font-bold bg-gradient-to-r from-orange-600 to-orange-300 inline-block text-transparent bg-clip-text text-2xl uppercase italic tracking-tighter">
               MaoMao
             </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-1">
+          <nav className="hidden md:flex items-center gap-1 p-5">
             {navLinks.map((link) => (
               <Link
                 key={link.path}

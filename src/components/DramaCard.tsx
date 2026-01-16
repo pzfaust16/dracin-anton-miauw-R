@@ -14,7 +14,7 @@ export function DramaCard({ drama, index = 0 }: DramaCardProps) {
   return (
     <Link
       href={`/detail/${drama.bookId}`}
-      className="group relative rounded-2xl overflow-hidden block animate-fade-up transition-all duration-500"
+      className="border border-gray-700 group relative rounded-2xl overflow-hidden block animate-fade-up transition-all duration-500 p-3 cursor-pointer bg-neutral-950"
       style={{
         animationDelay: `${index * 50}ms`,
         boxShadow: "0 4px 20px rgba(0, 0, 0, 0.3)",
