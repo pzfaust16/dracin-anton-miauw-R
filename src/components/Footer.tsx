@@ -13,7 +13,7 @@ export function Footer() {
                 <ArrowBigRight className="w-5 h-5 text-white fill-white" />
               </div>
               <span className="font-display font-bold text-xl text-orange-400">
-                StreamOrange
+                MaoMao
               </span>
             </Link>
             <p className="text-muted-foreground text-sm max-w-md">
