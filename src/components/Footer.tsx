@@ -48,7 +48,6 @@ export function Footer() {
             </ul>
           </div> */}
 
-          {/* Legal */}
           <div>
             {/* <h3 className="font-semibold text-foreground mb-4">Lainnya</h3> */}
             <ul className="space-y-2 text-sm">
