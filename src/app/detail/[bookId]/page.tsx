@@ -128,8 +128,7 @@ export default function DetailPage() {
                 {/* Watch Button - Mobile Only */}
                 <Link
                   href={`/watch/${book.bookId}`}
-                  className="md:hidden flex items-center gap-2 px-8 py-3 rounded-full font-semibold text-primary-foreground transition-all hover:scale-105 shadow-lg mb-4 w-full justify-center"
-                  style={{ background: "var(--gradient-primary)" }}
+                  className="md:hidden flex items-center gap-2 px-8 py-3 rounded-full font-semibold text-primary-foreground transition-all hover:scale-105 shadow-lg mb-4 w-full justify-center bg-gradient-to-r from-orange-600 to-orange-300"
                 >
                   <Play className="w-5 h-5 fill-current" />
                   Mulai Menonton
@@ -172,8 +171,7 @@ export default function DetailPage() {
               {/* Watch Button - desktop only */}
               <Link
                 href={`/watch/${book.bookId}`}
-                className="hidden md:inline-flex items-center gap-2 px-8 py-3 rounded-full font-semibold text-primary-foreground transition-all hover:scale-105 shadow-lg"
-                style={{ background: "var(--gradient-primary)" }}
+                className="hidden md:inline-flex items-center gap-2 px-8 py-3 rounded-full font-semibold text-primary-foreground transition-all hover:scale-105 shadow-lg bg-gradient-to-r from-orange-600 to-orange-300 "
               >
                 <Play className="w-5 h-5 fill-current" />
                 Mulai Menonton
