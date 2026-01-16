@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Play, ExternalLink } from "lucide-react";
+import { ArrowBigRight } from "lucide-react";
 
 export function Footer() {
   return (
@@ -10,19 +10,19 @@ export function Footer() {
           <div className="md:col-span-2">
             <Link href="/" className="flex items-center gap-2 group mb-4">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
-                <Play className="w-5 h-5 text-white fill-white" />
+                <ArrowBigRight className="w-5 h-5 text-white fill-white" />
               </div>
               <span className="font-display font-bold text-xl gradient-text">
-                DramaBox
+                DramaCinTon
               </span>
             </Link>
             <p className="text-muted-foreground text-sm max-w-md">
-              Nonton drama pendek gratis dan tanpa iklan.
+              Nonton drama pendek gratis.
             </p>
           </div>
 
           {/* Navigation */}
-          <div>
+          {/* <div>
             <h3 className="font-semibold text-foreground mb-4">Navigasi</h3>
             <ul className="space-y-2 text-sm">
               <li>
@@ -46,13 +46,13 @@ export function Footer() {
                 </Link>
               </li>
             </ul>
-          </div>
+          </div> */}
 
           {/* Legal */}
           <div>
-            <h3 className="font-semibold text-foreground mb-4">Lainnya</h3>
+            {/* <h3 className="font-semibold text-foreground mb-4">Lainnya</h3> */}
             <ul className="space-y-2 text-sm">
-              <li>
+              {/* <li>
                 <a 
                   href="https://lynk.id/sansekai/mxd6j2ezmxoe" 
                   target="_blank" 
@@ -62,7 +62,7 @@ export function Footer() {
                   Beli Source Code API
                   <ExternalLink className="w-3 h-3" />
                 </a>
-              </li>
+              </li> */}
               {/* <li>
                 <span className="text-muted-foreground">Kontak</span>
               </li>

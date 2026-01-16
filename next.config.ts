@@ -11,6 +11,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "hwztchapter.dramaboxdb.com",
       },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com"
+      }
     ],
   },
 };
