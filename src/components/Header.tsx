@@ -40,7 +40,7 @@ export function Header() {
               <ArrowBigRight className="w-5 h-5 text-white fill-white" />
             </div>
             <span className="font-display font-bold text-xl text-orange-400">
-              StreamOrange
+              MaoMao
             </span>
           </Link>
 
@@ -101,7 +101,7 @@ export function Header() {
       {searchOpen &&
         typeof document !== "undefined" &&
         createPortal(
-          <div className="fixed inset-0 bg-background z-[9999] overflow-hidden">
+          <div className="fixed inset-0 bg-background backdrop-blur-2xl z-[9999] overflow-hidden">
             <div className="container mx-auto px-4 py-6 h-[100dvh] flex flex-col">
               <div className="flex items-center gap-4 mb-6 flex-shrink-0">
                 <div className="flex-1 relative min-w-0">
@@ -127,7 +127,7 @@ export function Header() {
               <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden">
                 {isSearching && normalizedQuery && (
                   <div className="flex items-center justify-center py-12">
-                    <div className="w-8 h-8  rounded-full animate-spin" />
+                    <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
                   </div>
                 )}
 
