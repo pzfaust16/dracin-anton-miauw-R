@@ -3,17 +3,17 @@ import { ArrowBigRight } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="border-t border-border/50 bg-background/80 backdrop-blur-sm">
+    <footer className=" bg-slate-800 backdrop-blur-2xl">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="md:col-span-2">
             <Link href="/" className="flex items-center gap-2 group mb-4">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-300 to-orange-600 flex items-center justify-center">
                 <ArrowBigRight className="w-5 h-5 text-white fill-white" />
               </div>
-              <span className="font-display font-bold text-xl gradient-text">
-                DramaCinTon
+              <span className="font-display font-bold text-xl text-orange-400">
+                StreamOrange
               </span>
             </Link>
             <p className="text-muted-foreground text-sm max-w-md">
@@ -77,7 +77,7 @@ export function Footer() {
         </div>
 
         {/* Bottom */}
-        <div className="border-t border-border/50 mt-8 pt-8">
+        <div className="border-border/50 mt-8 pt-8">
           <p className="text-center text-sm text-muted-foreground">
             © {new Date().getFullYear()} Made with ❤️
           </p>

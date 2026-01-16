@@ -6,54 +6,72 @@
 
 @layer base {
   :root {
-    --background: 250 15% 8%;
-    --foreground: 0 0% 98%;
+    --radius: 0.65rem;
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.141 0.005 285.823);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.141 0.005 285.823);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.141 0.005 285.823);
+    --primary: oklch(0.646 0.222 41.116);
+    --primary-foreground: oklch(0.98 0.016 73.684);
+    --secondary: oklch(0.967 0.001 286.375);
+    --secondary-foreground: oklch(0.21 0.006 285.885);
+    --muted: oklch(0.967 0.001 286.375);
+    --muted-foreground: oklch(0.552 0.016 285.938);
+    --accent: oklch(0.967 0.001 286.375);
+    --accent-foreground: oklch(0.21 0.006 285.885);
+    --destructive: oklch(0.577 0.245 27.325);
+    --border: oklch(0.92 0.004 286.32);
+    --input: oklch(0.92 0.004 286.32);
+    --ring: oklch(0.75 0.183 55.934);
+    --chart-1: oklch(0.837 0.128 66.29);
+    --chart-2: oklch(0.705 0.213 47.604);
+    --chart-3: oklch(0.646 0.222 41.116);
+    --chart-4: oklch(0.553 0.195 38.402);
+    --chart-5: oklch(0.47 0.157 37.304);
+    --sidebar: oklch(0.985 0 0);
+    --sidebar-foreground: oklch(0.141 0.005 285.823);
+    --sidebar-primary: oklch(0.646 0.222 41.116);
+    --sidebar-primary-foreground: oklch(0.98 0.016 73.684);
+    --sidebar-accent: oklch(0.967 0.001 286.375);
+    --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
+    --sidebar-border: oklch(0.92 0.004 286.32);
+    --sidebar-ring: oklch(0.75 0.183 55.934);
+  }
 
-    --card: 250 15% 12%;
-    --card-foreground: 0 0% 98%;
-
-    --popover: 250 15% 10%;
-    --popover-foreground: 0 0% 98%;
-
-    --primary: 280 100% 70%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 320 100% 65%;
-    --secondary-foreground: 0 0% 100%;
-
-    --muted: 250 15% 18%;
-    --muted-foreground: 250 10% 60%;
-
-    --accent: 200 100% 60%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 250 15% 20%;
-    --input: 250 15% 20%;
-    --ring: 280 100% 70%;
-
-    --radius: 1rem;
-
-    /* Custom gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(280, 100%, 70%) 0%, hsl(320, 100%, 65%) 50%, hsl(350, 100%, 65%) 100%);
-    --gradient-card: linear-gradient(145deg, hsl(250, 15%, 14%) 0%, hsl(250, 15%, 10%) 100%);
-    --gradient-glow: radial-gradient(ellipse at center, hsl(280, 100%, 70%, 0.15) 0%, transparent 70%);
-    --gradient-hero: linear-gradient(180deg, hsl(250, 15%, 8%) 0%, hsl(280, 30%, 12%) 50%, hsl(250, 15%, 8%) 100%);
-    
-    /* Shadows */
-    --shadow-card: 0 8px 32px -8px hsl(280, 100%, 50%, 0.3);
-    --shadow-glow: 0 0 40px hsl(280, 100%, 70%, 0.4);
-
-    --sidebar-background: 250 15% 10%;
-    --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 280 100% 70%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 250 15% 18%;
-    --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 250 15% 20%;
-    --sidebar-ring: 280 100% 70%;
+  .dark {
+    --background: oklch(0.141 0.005 285.823);
+    --foreground: oklch(0.985 0 0);
+    --card: oklch(0.21 0.006 285.885);
+    --card-foreground: oklch(0.985 0 0);
+    --popover: oklch(0.21 0.006 285.885);
+    --popover-foreground: oklch(0.985 0 0);
+    --primary: oklch(0.705 0.213 47.604);
+    --primary-foreground: oklch(0.98 0.016 73.684);
+    --secondary: oklch(0.274 0.006 286.033);
+    --secondary-foreground: oklch(0.985 0 0);
+    --muted: oklch(0.274 0.006 286.033);
+    --muted-foreground: oklch(0.705 0.015 286.067);
+    --accent: oklch(0.274 0.006 286.033);
+    --accent-foreground: oklch(0.985 0 0);
+    --destructive: oklch(0.704 0.191 22.216);
+    --border: oklch(1 0 0 / 10%);
+    --input: oklch(1 0 0 / 15%);
+    --ring: oklch(0.408 0.123 38.172);
+    --chart-1: oklch(0.837 0.128 66.29);
+    --chart-2: oklch(0.705 0.213 47.604);
+    --chart-3: oklch(0.646 0.222 41.116);
+    --chart-4: oklch(0.553 0.195 38.402);
+    --chart-5: oklch(0.47 0.157 37.304);
+    --sidebar: oklch(0.21 0.006 285.885);
+    --sidebar-foreground: oklch(0.985 0 0);
+    --sidebar-primary: oklch(0.705 0.213 47.604);
+    --sidebar-primary-foreground: oklch(0.98 0.016 73.684);
+    --sidebar-accent: oklch(0.274 0.006 286.033);
+    --sidebar-accent-foreground: oklch(0.985 0 0);
+    --sidebar-border: oklch(1 0 0 / 10%);
+    --sidebar-ring: oklch(0.408 0.123 38.172);
   }
 }
 
@@ -69,7 +87,12 @@
     background-attachment: fixed;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: 'Space Grotesk', system-ui, sans-serif;
   }
 }
@@ -117,13 +140,11 @@
   }
 
   .tag-pill {
-    @apply px-3 py-1 text-xs font-medium rounded-full bg-muted/80 text-muted-foreground 
-           hover:bg-primary/20 hover:text-primary transition-colors duration-200;
+    @apply px-3 py-1 text-xs font-medium rounded-full bg-muted/80 text-muted-foreground hover:bg-primary/20 hover:text-primary transition-colors duration-200;
   }
 
   .nav-link {
-    @apply relative px-4 py-2 text-sm font-medium text-muted-foreground 
-           hover:text-foreground transition-colors duration-200;
+    @apply relative px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200;
   }
 
   .nav-link.active {
@@ -137,10 +158,7 @@
   }
 
   .search-input {
-    @apply w-full bg-muted/50 border border-border/50 rounded-2xl px-5 py-3 
-           text-foreground placeholder:text-muted-foreground
-           focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20
-           transition-all duration-300;
+    @apply w-full bg-muted/50 border border-border/50 rounded-2xl px-5 py-3 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-300;
   }
 
   .badge-popular {
@@ -149,8 +167,7 @@
   }
 
   .episode-count {
-    @apply inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium 
-           bg-background/80 backdrop-blur-sm rounded-lg;
+    @apply inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium bg-background/80 backdrop-blur-sm rounded-lg;
   }
 
   .play-count {
@@ -172,6 +189,7 @@
       opacity: 0;
       transform: translateY(20px);
     }
+
     to {
       opacity: 1;
       transform: translateY(0);
@@ -183,6 +201,7 @@
       opacity: 0;
       transform: scale(0.95);
     }
+
     to {
       opacity: 1;
       transform: scale(1);

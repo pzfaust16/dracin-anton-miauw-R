@@ -15,7 +15,7 @@ export function DramaGrid({ dramas, isLoading, title, subtitle }: DramaGridProps
       {(title || subtitle) && (
         <div className="mb-6">
           {title && (
-            <h2 className="font-display font-bold text-2xl md:text-3xl text-foreground">
+            <h2 className="font-display font-bold text-2xl md:text-3xl text-orange-300">
               {title}
             </h2>
           )}
@@ -28,13 +28,13 @@ export function DramaGrid({ dramas, isLoading, title, subtitle }: DramaGridProps
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">
         {isLoading
           ? Array.from({ length: 12 }).map((_, i) => (
-              <DramaCardSkeleton key={i} index={i} />
-            ))
+            <DramaCardSkeleton key={i} index={i} />
+          ))
           : dramas
-              ?.filter((drama) => drama.bookId)
-              .map((drama, index) => (
-                <DramaCard key={drama.bookId} drama={drama} index={index} />
-              ))}
+            ?.filter((drama) => drama.bookId)
+            .map((drama, index) => (
+              <DramaCard key={drama.bookId} drama={drama} index={index} />
+            ))}
       </div>
 
       {!isLoading && dramas?.length === 0 && (

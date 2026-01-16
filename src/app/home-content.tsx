@@ -8,7 +8,7 @@ export default function HomeContent() {
   const { data: dramas, isLoading, error } = useForYouDramas();
 
   return (
-    <main className="min-h-screen">
+    <main className="min-h-scree">
       <HeroSection
         title="Untuk Kamu"
         description="Drama pilihan yang dipersonalisasi khusus untukmu. Temukan cerita seru yang sesuai selera!"

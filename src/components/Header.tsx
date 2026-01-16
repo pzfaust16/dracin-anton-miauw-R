@@ -31,16 +31,16 @@ export function Header() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 glass-strong">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-card/80 backdrop-blur-2xl">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-300 to-orange-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
               <ArrowBigRight className="w-5 h-5 text-white fill-white" />
             </div>
-            <span className="font-display font-bold text-xl gradient-text">
-              DramaCinTon
+            <span className="font-display font-bold text-xl text-orange-400">
+              StreamOrange
             </span>
           </Link>
 
@@ -79,7 +79,7 @@ export function Header() {
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <nav className="md:hidden py-4 border-t border-border/50 animate-fade-up">
+          <nav className="md:hidden py-4  animate-fade-up">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
@@ -127,7 +127,7 @@ export function Header() {
               <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden">
                 {isSearching && normalizedQuery && (
                   <div className="flex items-center justify-center py-12">
-                    <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                    <div className="w-8 h-8  rounded-full animate-spin" />
                   </div>
                 )}
 
