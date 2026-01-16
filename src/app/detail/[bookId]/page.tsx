@@ -121,9 +121,19 @@ export default function DetailPage() {
             {/* Info */}
             <div className="space-y-6">
               <div>
-                <h1 className="text-3xl md:text-4xl font-bold font-display gradient-text mb-4">
+                <h1 className="text-3xl md:text-4xl font-bold font-display gradient-text">
                   {book.bookName}
                 </h1>
+
+                {/* Watch Button - Mobile Only */}
+                <Link
+                  href={`/watch/${book.bookId}`}
+                  className="md:hidden flex items-center gap-2 px-8 py-3 rounded-full font-semibold text-primary-foreground transition-all hover:scale-105 shadow-lg mb-4 w-full justify-center"
+                  style={{ background: "var(--gradient-primary)" }}
+                >
+                  <Play className="w-5 h-5 fill-current" />
+                  Mulai Menonton
+                </Link>
 
                 {/* Stats */}
                 <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
@@ -159,10 +169,10 @@ export default function DetailPage() {
                 </p>
               </div>
 
-              {/* Watch Button */}
+              {/* Watch Button - desktop only */}
               <Link
                 href={`/watch/${book.bookId}`}
-                className="inline-flex items-center gap-2 px-8 py-3 rounded-full font-semibold text-primary-foreground transition-all hover:scale-105 shadow-lg"
+                className="hidden md:inline-flex items-center gap-2 px-8 py-3 rounded-full font-semibold text-primary-foreground transition-all hover:scale-105 shadow-lg"
                 style={{ background: "var(--gradient-primary)" }}
               >
                 <Play className="w-5 h-5 fill-current" />
