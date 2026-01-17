@@ -6,6 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 import { useRouter, useParams } from "next/navigation";
 import type { DramaDetailDirect, DramaDetailResponseLegacy } from "@/types/drama";
+import { Button } from "@/components/ui/button";
 
 // Helper to check if response is new format
 function isDirectFormat(data: unknown): data is DramaDetailDirect {
@@ -75,6 +76,27 @@ export default function DetailPage() {
     );
   }
 
+  const handleClick = async (e: React.MouseEvent) => {
+    e.preventDefault();
+
+    try {
+      // Ambil affiliate link dari API
+      const response = await fetch("/api/affiliate/links");
+      const data = await response.json();
+
+      // Jika ada affiliate link, buka di tab baru
+      if (data.url) {
+        window.open(data.url, "_blank");  // ← Buka di tab baru
+      }
+
+      // Kemudian navigasi ke watch page (di tab asli)
+      router.push(`/watch/${bookId}`);  // ← Navigasi di tab asli
+    } catch (error) {
+      console.error("Error fetching affiliate link:", error);
+      router.push(`/watch/${bookId}`);
+    }
+  };
+
   return (
     <main className="min-h-screen pt-20">
       {/* Hero Section with Cover */}
@@ -108,13 +130,20 @@ export default function DetailPage() {
                 className="w-full max-w-[300px] mx-auto rounded-2xl shadow-2xl"
               />
               <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-6">
-                <Link
+                {/* <Link
                   href={`/watch/${book.bookId}`}
                   className="px-8 py-3 rounded-full bg-primary text-primary-foreground font-semibold flex items-center gap-2 hover:scale-105 transition-transform shadow-lg"
                 >
                   <Play className="w-5 h-5 fill-current" />
                   Tonton Sekarang
-                </Link>
+                </Link> */}
+                <Button
+                  onClick={handleClick}
+                  className="px-8 py-3 rounded-full bg-primary text-primary-foreground font-semibold flex items-center gap-2 hover:scale-105 transition-transform shadow-lg"
+                >
+                  <Play className="w-5 h-5 fill-current" />
+                  Mulai Menonton
+                </Button>
               </div>
             </div>
 
@@ -126,13 +155,20 @@ export default function DetailPage() {
                 </h1>
 
                 {/* Watch Button - Mobile Only */}
-                <Link
+                {/* <Link
                   href={`/watch/${book.bookId}`}
                   className="md:hidden flex items-center gap-2 px-8 py-3 rounded-full font-semibold text-primary-foreground transition-all hover:scale-105 shadow-lg mb-4 w-full justify-center bg-gradient-to-r from-orange-600 to-orange-300"
                 >
                   <Play className="w-5 h-5 fill-current" />
                   Mulai Menonton
-                </Link>
+                </Link> */}
+                <Button
+                  onClick={handleClick}
+                  className="md:hidden flex items-center gap-2 px-8 py-3 rounded-full font-semibold text-primary-foreground transition-all hover:scale-105 shadow-lg mb-4 w-full justify-center bg-gradient-to-r from-orange-600 to-orange-300"
+                >
+                  <Play className="w-5 h-5 fill-current" />
+                  Mulai Menonton
+                </Button>
 
                 {/* Stats */}
                 <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
@@ -169,13 +205,20 @@ export default function DetailPage() {
               </div>
 
               {/* Watch Button - desktop only */}
-              <Link
+              {/* <Link
                 href={`/watch/${book.bookId}`}
                 className="hidden md:inline-flex items-center gap-2 px-8 py-3 rounded-full font-semibold text-primary-foreground transition-all hover:scale-105 shadow-lg bg-gradient-to-r from-orange-600 to-orange-300 "
               >
                 <Play className="w-5 h-5 fill-current" />
                 Mulai Menonton
-              </Link>
+              </Link> */}
+              <Button
+                onClick={handleClick}
+                className="hidden md:inline-flex items-center gap-2 px-8 py-3 rounded-full font-semibold text-primary-foreground transition-all hover:scale-105 shadow-lg bg-gradient-to-r from-orange-600 to-orange-300 "
+              >
+                <Play className="w-5 h-5 fill-current" />
+                Mulai Menonton
+              </Button>
             </div>
           </div>
         </div>

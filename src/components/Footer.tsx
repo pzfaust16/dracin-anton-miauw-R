@@ -1,7 +1,12 @@
+"use client"
 import Link from "next/link";
 import { ArrowBigRight } from "lucide-react";
+import { useWebsiteSettings } from "@/components/providers/website-settings-provider";
 
 export function Footer() {
+  const { settings } = useWebsiteSettings();
+  const websiteName = settings?.websiteName || "MaoMao";
+
   return (
     <footer className=" bg-black">
       <div className="container mx-auto px-4 py-12">
@@ -10,14 +15,19 @@ export function Footer() {
           <div className="md:col-span-2">
             <Link href="/" className="flex items-center gap-2 group mb-4">
               <div className="w-10 h-10 rounded-xl flex items-center justify-center">
-                <img src="/logo.svg" alt="MaoMao Logo" className="w-8 h-8" />
+                <img src={settings?.logoUrl || "/logo.svg"} alt={`${websiteName} Logo`} className="w-8 h-8" />
               </div>
-              <span className="font-display font-bold text-xl text-orange-400">
-                MaoMao
+              <span 
+                className="font-display font-bold text-xl inline-block text-transparent bg-clip-text"
+                style={{
+                  backgroundImage: settings?.primaryColor ? `linear-gradient(to right, ${settings.primaryColor}, ${settings.secondaryColor || settings.primaryColor})` : "linear-gradient(to right, #ea580c, #fdba74)"
+                }}
+              >
+                {websiteName}
               </span>
             </Link>
             <p className="text-muted-foreground text-sm max-w-md">
-              Nonton drama pendek gratis.
+              {settings?.footerText || "Nonton drama pendek gratis."}
             </p>
           </div>
 

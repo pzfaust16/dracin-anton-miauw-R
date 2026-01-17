@@ -3,16 +3,27 @@
 import { HeroSection } from "@/components/HeroSection";
 import { DramaGrid } from "@/components/DramaGrid";
 import { useForYouDramas } from "@/hooks/useDramas";
+import { useWebsiteSettings } from "@/components/providers/website-settings-provider";
 
 export default function HomeContent() {
   const { data: dramas, isLoading, error } = useForYouDramas();
+  const { settings } = useWebsiteSettings();
 
+  const heroTitle = settings?.heroTitle || "Selamat Menikmati! MAOMAO";
+  const heroDescription = settings?.heroDescription || "Drama pilihan tanpa sponsor menjengkelkan, tanpa login2 ribet, dan pastinya bisa 24 jam.";
+  const heroTagline = settings?.heroTagline || "HOT RELEASE";
+  const heroImage = settings?.heroBgImageUrl || "/poster_beranda.jpg";
+
+  const websiteName = settings?.websiteName || "MAOMAO";
   return (
     <main className="min-h-screen">
       <div className="max-w-7xl mx-auto p-6 mt-12">
         <HeroSection
-          title="Untuk Kamu"
-          description="Drama pilihan yang dipersonalisasi khusus untukmu. Temukan cerita seru yang sesuai selera!"
+          title={heroTitle}
+          description={heroDescription}
+          tagline={heroTagline}
+          heroImage={heroImage}
+          websiteName={websiteName}
           icon="sparkles"
         />
       </div>

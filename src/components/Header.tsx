@@ -15,7 +15,10 @@ const navLinks = [
   { path: "/sulih-suara", label: "Sulih Suara" },
 ];
 
+import { useWebsiteSettings } from "@/components/providers/website-settings-provider";
+
 export function Header() {
+  const { settings } = useWebsiteSettings();
   const pathname = usePathname();
   const router = useRouter();
   const [searchOpen, setSearchOpen] = useState(false);
@@ -30,6 +33,12 @@ export function Header() {
     setSearchQuery("");
   };
 
+  const websiteName = settings?.websiteName || "MaoMao";
+  // Determine gradient based on settings or default
+  const gradientClass = settings?.primaryColor && settings?.secondaryColor 
+     ? `bg-gradient-to-r from-[${settings.primaryColor}] to-[${settings.secondaryColor}]` 
+     : "bg-gradient-to-r from-orange-600 to-orange-300";
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-card/80 backdrop-blur-2xl">
       <div className="container mx-auto px-4">
@@ -37,11 +46,16 @@ export function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
             <div className="w-10 h-10 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              {/* <ArrowBigRight className="w-5 h-5 text-white fill-white" /> */}
-              <img src="/logo.svg" alt="MaoMao Logo" className="w-8 h-8" />
+               {/* Use configured logo or default */}
+               <img src={settings?.logoUrl || "/logo.svg"} alt={`${websiteName} Logo`} className="w-8 h-8" />
             </div>
-            <span className="font-display font-bold bg-gradient-to-r from-orange-600 to-orange-300 inline-block text-transparent bg-clip-text text-2xl uppercase italic tracking-tighter">
-              MaoMao
+            <span 
+              className={`font-display font-bold inline-block text-transparent bg-clip-text text-2xl uppercase italic tracking-tighter`}
+              style={{
+                backgroundImage: settings?.primaryColor ? `linear-gradient(to right, ${settings.primaryColor}, ${settings.secondaryColor || settings.primaryColor})` : undefined
+              }}
+            >
+              {websiteName}
             </span>
           </Link>
 

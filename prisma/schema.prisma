@@ -1,0 +1,185 @@
+generator client {
+    provider = "prisma-client"
+    output   = "../src/generated/prisma"
+}
+
+datasource db {
+    provider = "postgresql"
+}
+
+model User {
+    id              String           @id @default(cuid())
+    email           String           @unique
+    name            String?
+    emailVerified   Boolean          @default(false)
+    image           String?
+    createdAt       DateTime         @default(now())
+    updatedAt       DateTime         @updatedAt
+    sessions        Session[]
+    accounts        Account[]
+    affiliateLinks  AffiliateLink[]
+    affiliateClicks AffiliateClick[]
+    visitors        WebsiteVisitor[] @relation("UserVisitors")
+
+    @@map("user")
+}
+
+model Session {
+    id        String   @id
+    expiresAt DateTime
+    token     String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    ipAddress String?
+    userAgent String?
+    userId    String
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@unique([token])
+    @@index([userId])
+    @@map("session")
+}
+
+model Account {
+    id                    String    @id
+    accountId             String
+    providerId            String
+    userId                String
+    user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+    accessToken           String?
+    refreshToken          String?
+    idToken               String?
+    accessTokenExpiresAt  DateTime?
+    refreshTokenExpiresAt DateTime?
+    scope                 String?
+    password              String?
+    createdAt             DateTime  @default(now())
+    updatedAt             DateTime  @updatedAt
+
+    @@index([userId])
+    @@map("account")
+}
+
+model Verification {
+    id         String   @id
+    identifier String
+    value      String
+    expiresAt  DateTime
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+
+    @@index([identifier])
+    @@map("verification")
+}
+
+model AffiliateLink {
+    id              String           @id @default(cuid())
+    userId          String
+    user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+    link            String           @unique
+    provider           String?
+    clickCount      Int              @default(0)
+    createdAt       DateTime         @default(now())
+    updatedAt       DateTime         @updatedAt
+    affiliateClicks AffiliateClick[]
+
+    @@index([userId])
+    @@index([link])
+    @@map("affiliate_link")
+}
+
+model AffiliateClick {
+    id              String        @id @default(cuid())
+    affiliateLinkId String
+    affiliateLink   AffiliateLink @relation(fields: [affiliateLinkId], references: [id], onDelete: Cascade)
+    userId          String?
+    user            User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+    ipAddress       String?
+    userAgent       String?
+    referrer        String?
+    clickedAt       DateTime      @default(now())
+
+    @@index([affiliateLinkId])
+    @@index([userId])
+    @@index([clickedAt])
+    @@map("affiliate_click")
+}
+
+model WebsiteVisitor {
+    id         String     @id @default(cuid())
+    userId     String?
+    user       User?      @relation("UserVisitors", fields: [userId], references: [id], onDelete: SetNull)
+    ipAddress  String
+    userAgent  String
+    deviceType DeviceType
+    referrer   String?
+    country    String?
+    city       String?
+    visitedAt  DateTime   @default(now())
+    day        String     @db.Char(10)
+    week       Int
+    month      String     @db.Char(7)
+    year       Int
+
+    @@index([userId])
+    @@index([ipAddress])
+    @@index([deviceType])
+    @@index([day])
+    @@index([week])
+    @@index([month])
+    @@index([visitedAt])
+    @@map("website_visitor")
+}
+
+model VisitorStats {
+    id            String    @id @default(cuid())
+    period        StatsType
+    periodValue   String
+    totalVisitors Int       @default(0)
+    mobileCount   Int       @default(0)
+    desktopCount  Int       @default(0)
+    tabletCount   Int       @default(0)
+    uniqueIPs     Int       @default(0)
+    topReferrers  String?   @db.Text
+    updatedAt     DateTime  @updatedAt
+
+    @@unique([period, periodValue])
+    @@index([period])
+    @@index([periodValue])
+    @@map("visitor_stats")
+}
+
+model WebsiteSetting {
+    id                String   @id @default(cuid())
+    logoUrl           String?
+    websiteName       String
+    heroTitle         String
+    heroTagline       String?
+    heroDescription   String?  @db.Text
+    heroBgImageUrl    String?
+    footerText        String?  @db.Text
+    footerLogo        String?
+    socialMediaLinks  String?  @db.Text
+    primaryColor      String   @default("#000000")
+    secondaryColor    String   @default("#FFFFFF")
+    metaDescription   String?  @db.Text
+    metaKeywords      String?
+    googleAnalyticsId String?
+    createdAt         DateTime @default(now())
+    updatedAt         DateTime @updatedAt
+
+    @@map("website_setting")
+}
+
+enum DeviceType {
+    MOBILE
+    DESKTOP
+    TABLET
+    OTHER
+}
+
+enum StatsType {
+    DAILY
+    WEEKLY
+    MONTHLY
+}
