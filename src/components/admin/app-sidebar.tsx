@@ -16,6 +16,7 @@ import {
   ListIcon,
   SearchIcon,
   SettingsIcon,
+  UserCog2,
   UsersIcon,
 } from "lucide-react"
 
@@ -32,6 +33,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { title } from "process"
+import { url } from "inspector"
 
 const data = {
   navMain: [
@@ -44,6 +47,11 @@ const data = {
       title: "Affiliate Link",
       url: "../affiliate",
       icon: LinkIcon,
+    },
+    {
+      title: "Profile",
+      url: "../profile",
+      icon: UserCog2,
     },
   ],
 }
