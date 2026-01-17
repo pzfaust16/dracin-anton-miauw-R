@@ -29,19 +29,13 @@
   ],
   "screenshots": [
     {
-      "src":"/wide.png",
-      "sizes": "1891x957",
+      "src": "/wide2.png",
+      "sizes": "1269x721",
       "type": "image/png",
       "formFactor": "wide"
     },
     {
-      "src":"/wide.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "formFactor": "wide"
-    },
-    {
-      "src":"/handset.png",
+      "src": "/handset.png",
       "sizes": "394x585",
       "type": "image/png",
       "formFactor": "handset"
