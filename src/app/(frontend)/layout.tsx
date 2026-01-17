@@ -6,6 +6,7 @@ import { Footer } from "@/components/Footer";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Suspense } from "react";
+import { ShareBubble } from "@/components/ShareBubble";
 import { Plus_Jakarta_Sans } from 'next/font/google';
 
 export const metadata: Metadata = {
@@ -32,6 +33,7 @@ export default function RootLayout({
           {children}
           <Footer />
           <Toaster />
+          <ShareBubble />
           <Sonner />
     </>
   );
