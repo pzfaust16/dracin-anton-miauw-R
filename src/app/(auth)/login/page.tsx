@@ -43,15 +43,19 @@ export default function LoginPage() {
                     return;
                 }
 
+                // Tunggu session cookies fully set (penting untuk Vercel)
+                await new Promise(resolve => setTimeout(resolve, 500));
+
                 toast.success("Login berhasil!", {
                     description: "Mengalihkan ke dashboard...",
                 });
 
-                router.push("/dashboard");
+                window.location.href = "/dashboard";
+
                 // Redirect setelah 1 detik (beri waktu toast muncul)
-                // setTimeout(() => {
-                //     router.push("/dashboard");
-                // }, 1000);
+                setTimeout(() => {
+                    router.push("/dashboard");
+                }, 1500);
             }
         } catch (error) {
             toast.error("Terjadi kesalahan", {
