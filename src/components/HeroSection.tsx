@@ -7,6 +7,8 @@ import Link from "next/link";
 interface HeroSectionProps {
   title: string;
   description: string;
+  tagline?: string;
+  heroImage?: string;
   icon?: "sparkles" | "trending" | "clock";
 }
 
@@ -16,16 +18,13 @@ const icons = {
   clock: Clock,
 };
 
-export function HeroSection({ title, description, icon = "sparkles" }: HeroSectionProps) {
+export function HeroSection({ title, description, tagline, heroImage, icon = "sparkles" }: HeroSectionProps) {
   const IconComponent = icons[icon];
   const containerRef = useRef<HTMLDivElement>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [scale, setScale] = useState(1);
-  // const imageUrl = "https://images.unsplash.com/photo-1572188863110-46d457c9234d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
-
-  // const imageUrl = "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?w=1200"
-
-  const imageUrl = '/poster_beranda.jpg'
+  
+  const imageUrl = heroImage || '/poster_beranda.jpg'
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
@@ -51,6 +50,7 @@ export function HeroSection({ title, description, icon = "sparkles" }: HeroSecti
       className="relative w-full h-[480px] rounded-[2.5rem] overflow-hidden group border border-white/10 shadow-xl"
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseMove}
+      ref={containerRef}
     >
       {/* Background Glow */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -61,12 +61,6 @@ export function HeroSection({ title, description, icon = "sparkles" }: HeroSecti
       {/* Background Image using div + optimized Image for preload */}
       <div
         className="absolute inset-0 z-[-1] h-full"
-        // style={{
-        //   backgroundImage: `url(${imageUrl})`,
-        //   backgroundSize: 'cover',
-        //   backgroundPosition: 'center',
-        //   backgroundRepeat: 'no-repeat',
-        // }}
         style={{
           backgroundImage: `url(${imageUrl})`,
           backgroundSize: "cover",
@@ -87,28 +81,18 @@ export function HeroSection({ title, description, icon = "sparkles" }: HeroSecti
         alt="Hero background"
         width={1170}
         height={600}
-        className="w-full h-full object-cover group-hover:scale-110 transition duration-1000"
+        className="w-full h-full object-cover group-hover:scale-110 transition duration-1000 hidden"
       />
 
-      {/* <div className="relative container mx-auto px-4 z-10">
-        <div className="flex items-center gap-3 mb-4">
-          <h1 className="font-display font-bold text-3xl md:text-4xl lg:text-5xl text-white drop-shadow-lg">
-            {title}
-          </h1>
-        </div>
-        <p className="text-white text-lg max-w-2xl drop-shadow-md">
-          {description}
-        </p>
-      </div> */}
       <div className="absolute bottom-10 left-10 max-w-lg">
         <span className="badge-popular mb-4 inline-block">
-          HOT RELEASE
+          {tagline || "HOT RELEASE"}
         </span>
-        <h2 className="text-4xl md:text-6xl mb-4 leading-tight">Selamat Menikmati!
-          <span className="bg-gradient-to-r from-orange-600 to-orange-300 inline-block text-transparent bg-clip-text text-6xl font-extrabold">MAOMAO</span>
+        <h2 className="text-4xl md:text-6xl mb-4 leading-tight">
+          {title}
         </h2>
-        <p className="text-white text-sm mb-6 line-clamp-2">Drama pilihan tanpa sponsor menjengkelkan, tanpa login2 ribet, dan pastinya bisa 24 jam.</p>
-        <Button className="bg-gradient-to-r from-[#EE4d2d] to-[#ffca28] rounded-2xl text-sm transition active:scale-95 shadow-lg">
+        <p className="text-white text-sm mb-6 line-clamp-2">{description}</p>
+        <Button className="bg-gradient-to-r from-[#EE4d2d] to-[#ffca28] rounded-2xl text-sm transition active:scale-95 shadow-lg" asChild>
           <Link href={'/terbaru'}>Nonton Sekarang</Link>
         </Button>
       </div>

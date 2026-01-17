@@ -17,6 +17,7 @@ import { Loader2 } from "lucide-react";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/admin/app-sidebar";
 import { SiteHeader } from "@/components/admin/site-header";
+import { WebsiteSettingsForm } from "@/components/admin/website-settings-form";
 
 export default function ProfilePage() {
     const { data: session } = authClient.useSession();
@@ -182,6 +183,9 @@ export default function ProfilePage() {
                                     </form>
                                 </CardContent>
                             </Card>
+                        </div>
+                        <div className="col-span-4 space-y-4">
+                            <WebsiteSettingsForm />
                         </div>
                     </div>
                 </div>
