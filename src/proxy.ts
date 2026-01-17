@@ -5,24 +5,36 @@ export async function proxy(request: NextRequest) {
     const { pathname } = request.nextUrl;
 
     // Protected routes
-    const isProtectedRoute = pathname.startsWith("/dashboard") ||
-        pathname.startsWith("/affiliate") ||
-        pathname.startsWith("/profile");
+    // Protected routes - pastikan semuanya tercakup dengan benar
+    const protectedRoutes = ["/dashboard", "/affiliate", "/profile"];
+
+    const isProtectedRoute = protectedRoutes.some(route =>
+        pathname.startsWith(route)
+    );
 
     // Auth routes
-    const isAuthRoute = pathname.startsWith("/login") ||
-        pathname.startsWith("/register");
+    const authRoutes = ["/login", "/register"];
+    const isAuthRoute = authRoutes.some(route =>
+        pathname.startsWith(route)
+    );
 
     // Ambil token dari cookie (sesuaikan nama cookie dengan BetterAuth Anda)
     const token = request.cookies.get("better-auth.session_token")?.value;
 
+    console.log("Middleware check:", {
+        pathname,
+        isProtectedRoute,
+        isAuthRoute,
+        hasToken: !!token,
+    });
+
     // Jika tidak ada token dan akses protected route, redirect ke login
+
     if (isProtectedRoute && !token) {
         const loginUrl = new URL("/login", request.url);
         loginUrl.searchParams.set("from", pathname);
         return NextResponse.redirect(loginUrl);
     }
-
     // Jika ada token dan akses auth route, redirect ke dashboard
     if (isAuthRoute && token) {
         return NextResponse.redirect(new URL("/dashboard", request.url));
