@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export async function proxy(request: NextRequest) {
+export async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
 
     // Protected routes
@@ -19,7 +19,9 @@ export async function proxy(request: NextRequest) {
     );
 
     // Ambil token dari cookie (sesuaikan nama cookie dengan BetterAuth Anda)
-    const token = request.cookies.get("better-auth.session_token")?.value;
+    // Updated to check for secure cookie as well
+    const token = request.cookies.get("better-auth.session_token")?.value || 
+                  request.cookies.get("__Secure-better-auth.session_token")?.value;
 
     console.log("Middleware check:", {
         pathname,
