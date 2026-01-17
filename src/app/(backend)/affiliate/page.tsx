@@ -1,14 +1,16 @@
 import { AppSidebar } from "@/components/admin/app-sidebar"
-import { ChartAreaInteractive } from "@/components/admin/chart-area-interactive"
-import { DataTable } from "@/components/admin/data-table"
-import { SectionCards } from "@/components/admin/section-cards"
 import { SiteHeader } from "@/components/admin/site-header"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 
-import data from "./data.json"
+// import data from "./data.json"
 import { DialogAddAff } from "@/components/admin/form/formAff"
+import { RealtimeTable } from "./realtime-table"
 
-export default function AffiliatePage() {
+import { getAffiliateLinks } from "@/actions/affiliate-actions"
+
+export default async function AffiliatePage() {
+  const initialData = await getAffiliateLinks()
+
   return (
     <SidebarProvider>
       <AppSidebar variant="inset" />
@@ -18,7 +20,7 @@ export default function AffiliatePage() {
           <div className="@container/main flex flex-1 flex-col gap-2">
             <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 px-4">
               <DialogAddAff />
-              <DataTable data={data} />
+              <RealtimeTable initialData={initialData} />
             </div>
           </div>
         </div>

@@ -107,7 +107,7 @@ import {
 } from "@/components/ui/tabs"
 
 export const schema = z.object({
-  id: z.number(),
+  id: z.union([z.number(), z.string()]),
   header: z.string(),
   type: z.string(),
   status: z.string(),
@@ -117,7 +117,7 @@ export const schema = z.object({
 })
 
 // Create a separate component for the drag handle
-function DragHandle({ id }: { id: number }) {
+function DragHandle({ id }: { id: number | string }) {
   const { attributes, listeners } = useSortable({
     id,
   })

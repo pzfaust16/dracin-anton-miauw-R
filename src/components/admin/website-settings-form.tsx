@@ -113,7 +113,7 @@ export function WebsiteSettingsForm() {
     }
 
     return (
-        <Card>
+        <Card className="bg-neutral-800">
             <CardHeader>
                 <CardTitle>Website Settings</CardTitle>
                 <CardDescription>

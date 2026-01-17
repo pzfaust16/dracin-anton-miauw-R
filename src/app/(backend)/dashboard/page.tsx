@@ -4,10 +4,12 @@ import { DataTable } from "@/components/admin/data-table"
 import { SiteHeader } from "@/components/admin/site-header"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 
-import data from "./data.json"
+import { RealtimeTable } from "../affiliate/realtime-table"
+import { getAffiliateLinks } from "@/actions/affiliate-actions"
 
 export default async function DashboardPage() {
 
+  const initialData = await getAffiliateLinks()
   return (
     <SidebarProvider>
       <AppSidebar variant="inset" />
@@ -20,7 +22,8 @@ export default async function DashboardPage() {
               <div className="px-4 lg:px-6">
                 <ChartAreaInteractive />
               </div>
-              <DataTable data={data} />
+              {/* <DataTable data={data} /> */}
+            <RealtimeTable initialData={initialData} />
             </div>
           </div>
         </div>

@@ -136,8 +136,8 @@ export default function ProfilePage() {
                         <h2 className="text-3xl font-bold tracking-tight">Profile Settings</h2>
                     </div>
                     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-                        <div className="col-span-4 lg:col-span-3 space-y-4 bg-neutral-800 ">
-                            <Card>
+                        <div className="col-span-4 lg:col-span-3 space-y-4">
+                            <Card className="bg-neutral-800">
                                 <CardHeader>
                                     <CardTitle>Password</CardTitle>
                                     <CardDescription>
