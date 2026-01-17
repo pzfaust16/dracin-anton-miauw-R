@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { signIn } from "@/utils/auth-client";
+import { signIn, signOut } from "@/utils/auth-client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -31,10 +31,26 @@ export default function LoginPage() {
                     description: result.error.message || "Email atau password salah",
                 });
             } else {
+                // Cek apakah email sudah verified
+                if (!result.data?.user?.emailVerified) {
+                    toast.error("Email belum diverifikasi", {
+                        description: "Silakan verifikasi email Anda terlebih dahulu",
+                    });
+
+                    // Logout/hapus session
+                    await signOut();
+
+                    return;
+                }
+
                 toast.success("Login berhasil!", {
                     description: "Mengalihkan ke dashboard...",
                 });
-                router.push("/dashboard");
+
+                // Redirect setelah 1 detik (beri waktu toast muncul)
+                setTimeout(() => {
+                    router.push("/dashboard");
+                }, 1000);
             }
         } catch (error) {
             toast.error("Terjadi kesalahan", {

@@ -51,9 +51,9 @@ export default function RegisterPage() {
                 });
             } else {
                 toast.success("Registrasi berhasil!", {
-                    description: "Mengalihkan ke dashboard...",
+                    description: "Mengalihkan ke halaman login...",
                 });
-                router.push("/dashboard");
+                router.push("/login");
             }
         } catch (error) {
             toast.error("Terjadi kesalahan", {

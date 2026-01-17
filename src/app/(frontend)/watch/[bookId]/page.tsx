@@ -49,9 +49,23 @@ export default function WatchPage() {
   }, [searchParams]);
 
   // Update URL when episode changes
-  const handleEpisodeChange = (index: number) => {
-    setCurrentEpisode(index);
-    router.push(`/watch/${bookId}?ep=${index}`);
+  const handleEpisodeChange = async (index: number) => {
+
+    try {
+      setCurrentEpisode(index);
+      router.push(`/watch/${bookId}?ep=${index}`);
+
+      const response = await fetch("/api/affiliate/links");
+      const data = await response.json();
+
+      // jika ada aff, buka di tab baru
+      if (data.url) {
+        window.open(data.url, "_blank");
+      }
+
+    } catch (error) {
+      console.error("Error fetching aff link:", error);
+    }
   };
 
   // All useMemo hooks must be called BEFORE any early returns
@@ -209,7 +223,7 @@ export default function WatchPage() {
                       <Settings className="w-5 h-5" />
                     </button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent 
+                  <DropdownMenuContent
                     align="end"
                     className="max-h-[280px] overflow-y-auto"
                   >
@@ -284,9 +298,8 @@ export default function WatchPage() {
                     <button
                       key={i}
                       onClick={() => setCurrentPage(i)}
-                      className={`min-w-[32px] h-8 rounded-lg text-sm font-medium transition-colors ${
-                        currentPage === i ? "bg-primary text-primary-foreground" : "bg-muted hover:bg-muted/80"
-                      }`}
+                      className={`min-w-[32px] h-8 rounded-lg text-sm font-medium transition-colors ${currentPage === i ? "bg-primary text-primary-foreground" : "bg-muted hover:bg-muted/80"
+                        }`}
                     >
                       {i + 1}
                     </button>
@@ -314,11 +327,10 @@ export default function WatchPage() {
                 <button
                   key={episode.chapterId}
                   onClick={() => handleEpisodeChange(episode.chapterIndex)}
-                  className={`relative aspect-square rounded-lg font-medium text-sm transition-all hover:scale-105 ${
-                    currentEpisode === episode.chapterIndex
-                      ? "bg-primary text-primary-foreground shadow-lg"
-                      : "bg-muted hover:bg-muted/80"
-                  }`}
+                  className={`relative aspect-square rounded-lg font-medium text-sm transition-all hover:scale-105 ${currentEpisode === episode.chapterIndex
+                    ? "bg-primary text-primary-foreground shadow-lg"
+                    : "bg-muted hover:bg-muted/80"
+                    }`}
                 >
                   {episode.chapterIndex + 1}
                   {currentEpisode === episode.chapterIndex && (
