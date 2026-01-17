@@ -47,10 +47,11 @@ export default function LoginPage() {
                     description: "Mengalihkan ke dashboard...",
                 });
 
+                router.push("/dashboard");
                 // Redirect setelah 1 detik (beri waktu toast muncul)
-                setTimeout(() => {
-                    router.push("/dashboard");
-                }, 1000);
+                // setTimeout(() => {
+                //     router.push("/dashboard");
+                // }, 1000);
             }
         } catch (error) {
             toast.error("Terjadi kesalahan", {
