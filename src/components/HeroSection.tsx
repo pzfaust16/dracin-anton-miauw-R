@@ -9,6 +9,7 @@ interface HeroSectionProps {
   description: string;
   tagline?: string;
   heroImage?: string;
+  websiteName?: string;
   icon?: "sparkles" | "trending" | "clock";
 }
 
@@ -18,12 +19,12 @@ const icons = {
   clock: Clock,
 };
 
-export function HeroSection({ title, description, tagline, heroImage, icon = "sparkles" }: HeroSectionProps) {
+export function HeroSection({ title, websiteName, description, tagline, heroImage, icon = "sparkles" }: HeroSectionProps) {
   const IconComponent = icons[icon];
   const containerRef = useRef<HTMLDivElement>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [scale, setScale] = useState(1);
-  
+
   const imageUrl = heroImage || '/poster_beranda.jpg'
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -90,6 +91,7 @@ export function HeroSection({ title, description, tagline, heroImage, icon = "sp
         </span>
         <h2 className="text-4xl md:text-6xl mb-4 leading-tight">
           {title}
+          <span className="bg-gradient-to-r from-orange-600 to-orange-300 inline-block text-transparent bg-clip-text text-6xl font-extrabold">{websiteName}</span>
         </h2>
         <p className="text-white text-sm mb-6 line-clamp-2">{description}</p>
         <Button className="bg-gradient-to-r from-[#EE4d2d] to-[#ffca28] rounded-2xl text-sm transition active:scale-95 shadow-lg" asChild>

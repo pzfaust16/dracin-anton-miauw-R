@@ -14,6 +14,7 @@ export default function HomeContent() {
   const heroTagline = settings?.heroTagline || "HOT RELEASE";
   const heroImage = settings?.heroBgImageUrl || "/poster_beranda.jpg";
 
+  const websiteName = settings?.websiteName || "MAOMAO";
   return (
     <main className="min-h-screen">
       <div className="max-w-7xl mx-auto p-6 mt-12">
@@ -22,6 +23,7 @@ export default function HomeContent() {
           description={heroDescription}
           tagline={heroTagline}
           heroImage={heroImage}
+          websiteName={websiteName}
           icon="sparkles"
         />
       </div>

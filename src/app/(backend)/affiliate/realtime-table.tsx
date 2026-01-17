@@ -13,7 +13,7 @@ export function RealtimeTable({ initialData }: RealtimeTableProps) {
   const { data: affiliateLinks = [] } = useQuery({
     queryKey: ["affiliate-links"],
     queryFn: async () => await getAffiliateLinks(),
-    refetchInterval: 1000,
+    refetchInterval: 5000,
     initialData
   })
 

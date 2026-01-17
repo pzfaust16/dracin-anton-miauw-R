@@ -66,7 +66,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <a href="#">
+              <a href="../dashboard">
                 <img src="/logo.svg" alt="MaoMao Logo" className="w-8 h-8" />
                 <span className="font-display font-bold bg-gradient-to-r from-orange-600 to-orange-300 inline-block text-transparent bg-clip-text text-2xl uppercase italic tracking-tighter">MaoMao</span>
               </a>

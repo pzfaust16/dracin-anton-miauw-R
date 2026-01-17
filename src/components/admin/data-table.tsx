@@ -52,6 +52,7 @@ import {
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
 import { toast } from "sonner"
 import { z } from "zod"
+import { deleteAffiliateLink } from "@/actions/affiliate-actions"
 
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Badge } from "@/components/ui/badge"
@@ -105,6 +106,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs"
+import { DialogEditAff } from "./form/formEditAff"
 
 export const schema = z.object({
   id: z.union([z.number(), z.string()]),
@@ -133,6 +135,70 @@ function DragHandle({ id }: { id: number | string }) {
       <GripVerticalIcon className="size-3 text-muted-foreground" />
       <span className="sr-only">Drag to reorder</span>
     </Button>
+  )
+}
+
+function DataTableRowActions<TData>({ row }: { row: Row<TData> }) {
+  const [showEditDialog, setShowEditDialog] = React.useState(false)
+  
+  // Extract data. 
+  // We need to cast row.original to access our specific fields
+  // In a real app we might want to make TData extends our schema
+  const data = row.original as any 
+
+  async function handleDelete() {
+    if (confirm("Are you sure you want to delete this link?")) {
+      const result = await deleteAffiliateLink(data.id)
+      if (result.success) {
+        toast.success("Link deleted")
+        // Redirect setelah 1 detik (beri waktu toast muncul)
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      } else {
+        toast.error("Failed to delete link")
+      }
+    }
+  }
+
+  return (
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="ghost"
+            className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+          >
+            <MoreVerticalIcon className="h-4 w-4" />
+            <span className="sr-only">Open menu</span>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-32 !bg-neutral-800 border-gray-800">
+          <DropdownMenuItem onSelect={() => setShowEditDialog(true)}>
+            Edit
+          </DropdownMenuItem>
+          <DropdownMenuSeparator className="bg-gray-700" />
+          <DropdownMenuItem 
+            className="text-red-500 focus:text-red-500" 
+            onSelect={handleDelete}
+          >
+            Delete
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      {showEditDialog && (
+        <DialogEditAff
+          open={showEditDialog}
+          onOpenChange={setShowEditDialog}
+          initialData={{
+            id: data.id,
+            provider: data.header, 
+            link: data.type, 
+          }}
+        />
+      )}
+    </>
   )
 }
 
@@ -187,27 +253,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
   {
     id: "actions",
     header: "Actions",
-    cell: () => (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            className="flex size-8 text-muted-foreground data-[state=open]:bg-muted"
-            size="icon"
-          >
-            <MoreVerticalIcon />
-            <span className="sr-only">Open menu</span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-32">
-          <DropdownMenuItem>Edit</DropdownMenuItem>
-          <DropdownMenuItem>Make a copy</DropdownMenuItem>
-          <DropdownMenuItem>Favorite</DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>Delete</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    ),
+    cell: ({ row }) => <DataTableRowActions row={row} />,
   },
 ]
 
@@ -332,7 +378,7 @@ export function DataTable({
           </TabsTrigger>
           <TabsTrigger value="focus-documents">Focus Documents</TabsTrigger>
         </TabsList>
-        <div className="flex items-center gap-2">
+        {/* <div className="flex items-center gap-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="sm">
@@ -366,7 +412,7 @@ export function DataTable({
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
-        </div>
+        </div> */}
       </div>
       <TabsContent
         value="outline"

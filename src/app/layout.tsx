@@ -9,6 +9,7 @@ import { Suspense } from "react";
 import { Plus_Jakarta_Sans } from 'next/font/google';
 import { getWebsiteSettings } from "@/server/db/website-settings.db";
 import { WebsiteSettingsProvider } from "@/components/providers/website-settings-provider";
+import { VisitorTracker } from "@/components/visitor-tracker";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -52,6 +53,7 @@ export default async function RootLayout({
       </head>
       <body className={plusJakartaSans.variable}>
         <WebsiteSettingsProvider settings={settings}>
+          <VisitorTracker />
           <Providers>
             {children}
             <Toaster />

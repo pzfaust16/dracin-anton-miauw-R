@@ -42,6 +42,9 @@ export function DialogAddAff() {
             if (formRef.current) {
                 formRef.current.reset();
             }
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
             setOpen(false);
         } catch (error) {
             console.error("Error creating affiliate link:", error);
