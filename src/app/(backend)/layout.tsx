@@ -24,14 +24,12 @@ export default function DashboardLayout({
 }>) {
     return (
         <>
-            <body className={plusJakartaSans.variable}>
-                <Providers>
-                    {/* TIDAK ADA Header atau Footer di sini */}
-                    {children}
-                    <Toaster />
-                    <Sonner />
-                </Providers>
-            </body>
+            <Providers>
+                {/* TIDAK ADA Header atau Footer di sini */}
+                {children}
+                <Toaster />
+                <Sonner />
+            </Providers>
         </>
     );
 }

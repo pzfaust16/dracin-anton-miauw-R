@@ -77,8 +77,7 @@ model AffiliateLink {
     userId          String
     user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
     link            String           @unique
-    title           String?
-    description     String?
+    provider           String?
     clickCount      Int              @default(0)
     createdAt       DateTime         @default(now())
     updatedAt       DateTime         @updatedAt

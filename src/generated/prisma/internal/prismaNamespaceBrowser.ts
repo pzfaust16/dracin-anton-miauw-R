@@ -140,8 +140,7 @@ export const AffiliateLinkScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   link: 'link',
-  title: 'title',
-  description: 'description',
+  provider: 'provider',
   clickCount: 'clickCount',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
