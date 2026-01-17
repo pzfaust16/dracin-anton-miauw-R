@@ -36,3 +36,4 @@ out
 *.sw?
 .next
 ./src/generated/prisma
+*.sql
