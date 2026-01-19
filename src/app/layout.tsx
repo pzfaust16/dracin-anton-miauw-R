@@ -20,7 +20,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getWebsiteSettings();
   return {
-    title: settings?.websiteName ? `${settings.websiteName} - ${settings.heroTitle}` : "MaoMao - Streaming Drama Pendek",
+    title: settings?.websiteName ? `${settings.websiteName} - ${settings.heroTitle}` : "MiawMiaw - Streaming Drama Pendek",
     description: settings?.metaDescription || settings?.heroDescription || "Nonton drama pendek gratis.",
     keywords: settings?.metaKeywords || "drama, streaming, nonton",
   };

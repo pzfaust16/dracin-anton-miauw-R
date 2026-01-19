@@ -13,7 +13,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-    title: "Dashboard - MaoMao",
+    title: "Dashboard - MiawMiaw",
     description: "Panel pengguna",
 };
 
