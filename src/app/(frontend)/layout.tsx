@@ -10,7 +10,7 @@ import { ShareBubble } from "@/components/ShareBubble";
 import { Plus_Jakarta_Sans } from 'next/font/google';
 
 export const metadata: Metadata = {
-  title: "MiawMiaw - Streaming Drama Pendek",
+  title: "MaoMao - Streaming Drama Pendek",
   description: "Nonton drama pendek gratis.",
 };
 
